@@ -13,20 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('banners', function (Blueprint $table) {
-            $table->id();
-            $table->string('image');
-            $table->timestamps();
+        Schema::table('admins', function (Blueprint $table) {
+            $table->dropColumn('remember_token');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('banners');
+        Schema::table('admins', function (Blueprint $table) {
+            $table->string('remember_token')->nullable()->after('password'); 
+        });
     }
 };
