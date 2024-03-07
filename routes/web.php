@@ -29,9 +29,7 @@ Route::get('/curriculums/{id}', [CurriculumController::class, 'show']);
 
 // DeliveryTimeController のルーティング
 // Route::model('deliveryTime', DeliveryTime::class);
-// Route::put('delivery-times/{deliveryTime}', [DeliveryTimeController::class, 'update'])->name('delivery-times.update');
-// Route::get('/delivery-times/{id}/edit', 'DeliveryTimeController@edit')->name('delivery-times.edit');
-// Route::get('delivery_times/{deliveryTime}', [DeliveryTimeController::class, 'show'])->name('delivery_times.show');
+Route::post('/delivery_times', [DeliveryTimeController::class, 'store'])->name('delivery_times.store');
 
 // CurriculumController の配信日時表示ページへのルーティング
 Route::get('/curriculums/{curriculum}/delivery-time', [CurriculumController::class, 'deliveryTime'])->name('curriculums.delivery_time');

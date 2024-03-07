@@ -13,15 +13,13 @@ class DeliveryTimeSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // すべてのカリキュラムを取得
         $curriculums = Curriculum::all();
 
-        // 各カリキュラムに対してダミーの配信日時を1つずつ作成
         foreach ($curriculums as $curriculum) {
             DeliveryTime::create([
                 'curriculums_id' => $curriculum->id,
-                'delivery_from' => $faker->dateTimeBetween('-1 week', '+1 week'),
-                'delivery_to' => $faker->dateTimeBetween('+1 week', '+2 weeks'),
+                'delivery_from' => $faker->dateTimeBetween('-1 week', '+1 week')->format('Ymd') . '120000',
+                'delivery_to' => $faker->dateTimeBetween('+1 week', '+2 weeks')->format('Ymd') . '120000',
             ]);
         }
     }
