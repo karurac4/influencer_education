@@ -14,8 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            Schema::create('articles', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->timestamp('posted_date')->nullable();
+                $table->text('article_contents');
+                $table->timestamps();
+            });
         });
     }
 

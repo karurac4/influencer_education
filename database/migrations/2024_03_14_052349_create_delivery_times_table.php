@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('banners', function (Blueprint $table) {
-            $table->id();
-            $table->string('image');
+        Schema::create('delivery_times', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('curriculums_id')->references('id')->on('curriculums');
+            $table->dateTime('delivery_from');
+            $table->dateTime('delivery_to');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('banners');
+        Schema::dropIfExists('delivery_times');
     }
 };
