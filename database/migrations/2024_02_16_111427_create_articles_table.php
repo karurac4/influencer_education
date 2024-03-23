@@ -15,10 +15,13 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->dateTime('posted_date');
+            $table->longText('article_contents');
             $table->timestamps();
         });
     }
-
+   
     /**
      * Reverse the migrations.
      *

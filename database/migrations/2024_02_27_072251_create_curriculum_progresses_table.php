@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('banners', function (Blueprint $table) {
+        Schema::create('curriculum_progresses', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
+            $table->integer('curriculums_id');
+            $table->integer('users_id');
+            $table->tinyInteger('clear_flg');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('banners');
+        Schema::dropIfExists('curriculum_progresses');
     }
 };

@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use App\Models\Article;
+use App\Http\Controllers\DB;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // インスタンス生成
+        $model = new Article();
+        $articles = $model->getArticle();
+
+        return view('top', ['articles' => $articles]);
+    
     }
 }

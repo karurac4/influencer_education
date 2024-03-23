@@ -4,9 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Contracts\Validation\Rule;
+
+use Xzxzyzyz\Laravel\JapaneseValidation\Rules\Katakana;
 
 class RegisterController extends Controller
 {
@@ -28,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -48,11 +53,21 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $messages = [
+            'required' => ':attribute フィールドは必須です。',
+            'email' => '有効なメールアドレスである必要があります。',
+            'unique' => 'メールアドレスは既に使用されています。',
+            'min' => ':attribute は最低 :min 文字以上である必要があります。',
+            'password' => 'パスワード と一致させる必要があります',
+            'name_kana' => 'カタカナで入力してください。'
+        ];
+
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255','unique:users'],
+            'name_kana' => ['required', 'string', 'max:255', new Katakana],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        ], $messages);
     }
 
     /**
@@ -61,12 +76,21 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(Request $request)
+
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $data = $request->all();
+
+        $validator = $this->validator($data);
+
+        if ($validator->fails()) {
+            return redirect('register')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        return redirect('login');
     }
+
+
 }
