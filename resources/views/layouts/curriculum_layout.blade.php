@@ -8,6 +8,14 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    .btn-custom-lightblue {
+        color: #fff;
+        background-color: #add8e6; 
+        border-color: #add8e6; 
+        }
+    </style>
+
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -67,13 +75,19 @@
 
         <div class="container-fluid">
     <div class="row">
-       <!-- 左側のメニューバー -->
-            <div class="col-md-3">
-                <h3>Grades</h3>
-                @foreach($grades as $grade)
-                    <a href="#" class="grade-link" data-grade-id="{{ $grade->id }}">{{ $grade->name }}</a><br>
-                @endforeach
-            </div>
+<!-- 左側のメニューバー -->
+<div class="col-md-3">
+    <h3>学年一覧</h3>
+    @foreach($grades as $key => $grade)
+        @if($key < 6)
+        <a href="#" class="btn btn-custom-lightblue grade-link" data-grade-id="{{ $grade->id }}">{{ $grade->name }}</a><br>
+        @elseif($key < 9)
+            <a href="#" class="btn btn-success grade-link" data-grade-id="{{ $grade->id }}">{{ $grade->name }}</a><br>
+        @else
+            <a href="#" class="btn btn-info grade-link" data-grade-id="{{ $grade->id }}">{{ $grade->name }}</a><br>
+        @endif
+    @endforeach
+</div>
         
         <!-- コンテンツ -->
         <div class="col-md-9">
