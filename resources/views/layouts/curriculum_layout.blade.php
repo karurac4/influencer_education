@@ -71,6 +71,21 @@
                     </ul>
                 </div>
             </div>
+            <ul class="navbar-nav flex-row">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('curriculums.index') }}">授業管理</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">お知らせ管理</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">バナー管理</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">ログアウト</a>
+        </li>
+    </ul>
+            </div>
         </nav>
 
         <div class="container-fluid">

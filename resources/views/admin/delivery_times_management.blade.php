@@ -1,3 +1,6 @@
+@extends('layouts.admin_layout')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -179,3 +182,4 @@ $(document).ready(function () {
 
 </body>
 </html>
+@endsection
