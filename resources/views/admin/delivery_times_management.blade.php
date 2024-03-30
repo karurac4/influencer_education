@@ -36,51 +36,45 @@
         </div>
     </div>    
 
-<form id="delivery-time-form" method="POST" action="{{ route('delivery_times.store') }}">
-        @csrf
+    {{-- プラスボタンを押した時に追加されるフォームのテンプレート --}}
+<script type="text/template" id="template-delivery-time">
+    <div class="delivery-time-form-set">
+        <input type="hidden" name="curriculums_id" value="{{ $curriculum->id }}">
+        <input type="datetime-local" name="delivery_from[]" required>
+        <input type="datetime-local" name="delivery_to[]" required>
+        <button type="button" class="remove-delivery-time">削除</button>
+    </div>
+</script>
 
+<form action="{{ route('delivery_times.store') }}" method="POST">
+    @csrf
+    <div id="delivery-time-forms">
+    @forelse ($deliveryTimes as $deliveryTime)
+    <div class="delivery-time-form-set">
+        @php
+            $deliveryFrom = \Carbon\Carbon::parse($deliveryTime->delivery_from);
+            $deliveryTo = \Carbon\Carbon::parse($deliveryTime->delivery_to);
+        @endphp
+        <input type="hidden" name="curriculums_id" value="{{ $curriculum->id }}">
+        <input type="datetime-local" name="delivery_from[]" value="{{ $deliveryFrom->format('Y-m-d\TH:i') }}" required>
+        <input type="datetime-local" name="delivery_to[]" value="{{ $deliveryTo->format('Y-m-d\TH:i') }}" required>
+        <button type="button" class="remove-delivery-time">削除</button>
+    </div>
+    @empty
+    <!-- データがない場合でも最初から1つのフォームを表示 -->
+    <div class="delivery-time-form-set">
+        <input type="hidden" name="curriculums_id" value="{{ $curriculum->id }}">
+        <input type="datetime-local" name="delivery_from[]" required>
+        <input type="datetime-local" name="delivery_to[]" required>
+        <button type="button" class="remove-delivery-time">削除</button>
+    </div>
+    @endforelse
+</div>
 
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+    <button type="button" id="add-delivery-time">＋ 日時を追加</button>
+    <button type="submit">登録</button>
+</form>
 
-
-        <div id="delivery-time-fields">
-            <div class="form-row">
-            <input type="hidden" name="curriculums_id" value="{{ $curriculum->id }}">
-                <div class="form-group col-md-3">
-                    <label for="start_date">開始日 (YYYYMMDD):</label>
-                    <input type="text" id="start_date" name="delivery_from_date[]" class="form-control" value="{{ old('delivery_from_date.0', isset($deliveryTimes[0]) ? substr(str_replace('-', '', $deliveryTimes[0]->delivery_from), 0, 8) : '') }}">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="start_time">時刻 (HH:MM):</label>
-                    <input type="text" id="start_time" name="delivery_from_time[]" class="form-control" value="{{ old('delivery_from_time.0', isset($deliveryTimes[0]) ? substr($deliveryTimes[0]->delivery_from, 11, 5) : '') }}">
-                </div>
-                <div class="form-group col-md-1 separator">〜</div>
-                <div class="form-group col-md-3">
-                    <label for="end_date">終了日 (YYYYMMDD):</label>
-                    <input type="text" id="end_date" name="delivery_to_date[]" class="form-control" value="{{ old('delivery_to_date.0', isset($deliveryTimes[0]) ? substr(str_replace('-', '', $deliveryTimes[0]->delivery_to), 0, 8) : '') }}">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="end_time">時刻 (HH:MM):</label>
-                    <input type="text" id="end_time" name="delivery_to_time[]" class="form-control" value="{{ old('delivery_to_time.0', isset($deliveryTimes[0]) ? substr($deliveryTimes[0]->delivery_to, 11, 5) : '') }}">
-                </div>
-                <div class="form-group col-md-1 align-self-end">
-                    <button class="btn btn-danger remove-delivery-time">×</button>
-                </div>
-            </div>
-        </div>
-        <button id="add-delivery-time" type="button" class="btn btn-success mt-2">＋</button>   
-        <button type="submit" class="btn btn-primary mt-2">登録</button>
-
-
-    </form>
 </div>
 
 
@@ -92,94 +86,25 @@
 
 <script>
 $(document).ready(function () {
-    var index = {{ count($deliveryTimes) }};
-  
-    // フォームを追加
-    $("#add-delivery-time").click(function (e) {
-        e.preventDefault(); 
-        var newField = `
-        <div class="form-row">
-            <input type="hidden" name="curriculums_id[]" value="{{ $curriculum->id }}">
-            <div class="form-group col-md-3">
-                <label for="start_date_${index}">開始日 (YYYYMMDD):</label>
-                <input type="text" id="start_date_${index}" name="delivery_from_date[]" class="form-control">
-            </div>
-            <div class="form-group col-md-2">
-                <label for="start_time_${index}">時刻 (HH:MM):</label>
-                <input type="text" id="start_time_${index}" name="delivery_from_time[]" class="form-control">
-            </div>
-            <div class="form-group col-md-1 separator">〜</div>
-            <div class="form-group col-md-3">
-                <label for="end_date_${index}">終了日 (YYYYMMDD):</label>
-                <input type="text" id="end_date_${index}" name="delivery_to_date[]" class="form-control">
-            </div>
-            <div class="form-group col-md-2">
-                <label for="end_time_${index}">時刻 (HH:MM):</label>
-                <input type="text" id="end_time_${index}" name="delivery_to_time[]" class="form-control">
-            </div>
-            <div class="form-group col-md-1 align-self-end">
-                <button class="btn btn-danger remove-delivery-time">×</button>
-            </div>
-        </div>
-        `;
-        $("#delivery-time-fields").append(newField);
-        index++;
-        loadDeliveryTimeData(index);
+    // 「＋ 日時を追加」ボタンクリックイベント
+    $('#add-delivery-time').click(function() {
+        // テンプレートからフォームセットを複製して追加
+        var template = $('#template-delivery-time').html();
+        $('#delivery-time-forms').append(template);
     });
 
-    // 削除機能
-    $(document).on("click", ".remove-delivery-time", function () {
-        $(this).closest(".form-row").remove();
-    });
-
-    // 最新のデータを再読み込み
-    function loadDeliveryTimeData(index) {  
-        $.ajax({
-            url: "{{ route('get_delivery_times') }}",
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                console.log("Data received from server:", data); // サーバーから受信したデータをログに表示
-               
-                if (data.length >= index) {
-                    $("#start_date_" + index).val(data[index - 1].delivery_from_date);
-                    $("#start_time_" + index).val(data[index - 1].delivery_from_time);
-                    $("#end_date_" + index).val(data[index - 1].delivery_to_date);
-                    $("#end_time_" + index).val(data[index - 1].delivery_to_time);
-                }
-            },
-            error: function(xhr, textStatus, errorThrown) {
-                console.log("Error:", xhr.responseText);
-            }
-        });
-    }
-
-    // フォーム送信を非同期で行う
-    $("#delivery-time-form").submit(function(e) {
-        e.preventDefault();
-        var formData = $(this).serialize(); 
-        $.ajax({
-            url: "{{ route('delivery_times.store') }}",
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                // 成功した場合の処理
-                console.log("Success:", response);
-            },
-            error: function(xhr, textStatus, errorThrown) {
-                // エラーが発生した場合の処理
-                console.log("Error:", xhr.responseText);
-            }
-        });
+    // 動的に生成された「削除」ボタンのクリックイベント
+    // 動的要素に対しては $(document).on を使う
+    $(document).on('click', '.remove-delivery-time', function() {
+        // フォームセットを削除
+        $(this).closest('.delivery-time-form-set').remove();
     });
 });
 
 </script>
 
 
-
-
-
 </body>
 </html>
 @endsection
+

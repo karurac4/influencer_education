@@ -10,64 +10,44 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
+
 class DeliveryTimeController extends Controller
 {
 
 
     public function store(Request $request)
     {
-// 送信されたデータをログに出力
-Log::info('Received data:', $request->all());
+        // バリデーション
+        $request->validate([
+            'curriculums_id' => 'required|exists:curriculums,id',
+            'delivery_from' => 'required|array',
+            'delivery_from.*' => 'required|date',
+            'delivery_to' => 'required|array',
+            'delivery_to.*' => 'required|date|after_or_equal:delivery_from.*',
+        ]);
 
-// curriculums_id の値をログに出力
-Log::info('Curriculums ID:', ['value' => $request->curriculums_id]);
+        $curriculumId = $request->input('curriculums_id');
+        $deliveryFrom = $request->input('delivery_from');
+        $deliveryTo = $request->input('delivery_to');
 
-        try {
-            $request->validate([
-                'curriculums_id.*' => 'required|integer',
-                'delivery_from_date.*' => 'nullable|date_format:Ymd',
-                'delivery_from_time.*' => 'nullable|date_format:H:i',
-                'delivery_to_date.*' => 'nullable|date_format:Ymd',
-                'delivery_to_time.*' => 'nullable|date_format:H:i',
+        // 一旦古いデータを削除
+        DeliveryTime::where('curriculums_id', $curriculumId)->delete();
+
+        // 新しいデータを保存
+        foreach ($deliveryFrom as $key => $value) {
+            DeliveryTime::create([
+                'curriculums_id' => $curriculumId,
+                'delivery_from' => $value,
+                'delivery_to' => $deliveryTo[$key],
             ]);
-        
-            // 送信されたデータをログに出力
-            Log::info('Received data:', $request->all());
-        
-            // DBトランザクションを開始
-            DB::beginTransaction();
-        
-            // curriculums_idに該当する古いデータを削除する
-        DeliveryTime::where('curriculums_id', $request->curriculums_id[0])->delete(); // 配列の最初の要素を取得
-
-        
-           // フォームから受け取った配信日時の数だけループ処理を行う
-        for ($i = 0; $i < count($request->delivery_from_date); $i++) {
-            $delivery_time = new DeliveryTime();
-            $delivery_time->curriculums_id = $request->curriculums_id[0]; 
-            $delivery_time->delivery_from = \DateTime::createFromFormat('Ymd H:i:s', $request->delivery_from_date[$i] . ' ' . $request->delivery_from_time[$i] . ':00')->format('Y-m-d H:i:s');
-            $delivery_time->delivery_to = \DateTime::createFromFormat('Ymd H:i:s', $request->delivery_to_date[$i] . ' ' . $request->delivery_to_time[$i] . ':00')->format('Y-m-d H:i:s');
-            $delivery_time->save();
-        
-                Log::info('DeliveryTime created:', [
-                    'curriculums_id' => $delivery_time->curriculums_id,
-                    'delivery_from' => $delivery_time->delivery_from,
-                    'delivery_to' => $delivery_time->delivery_to,
-                ]);
-            }
-        
-            DB::commit();
-        
-            return response()->json(['message' => '配信日時が正常に追加されました']);
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-            Log::error($e->getMessage());
-            return response()->json(['error' => '配信日時の追加に失敗しました'], 500);
         }
-        
+
+        $curriculum = Curriculum::findOrFail($curriculumId);
+        return redirect()->route('delivery_times.edit', ['curriculum' => $curriculum->id])
+            ->with('success', '配信日時を登録しました。');
     }
 
+    
 
     public function getDeliveryTimes()
     {
@@ -78,10 +58,18 @@ Log::info('Curriculums ID:', ['value' => $request->curriculums_id]);
     public function index()
     {
     $deliveryTimes = $this->getDeliveryTimes(); 
-
+    
     return view('admin.delivery_times_management')->with('deliveryTimes', $deliveryTimes); 
     }
 
+
+
+    public function edit(Curriculum $curriculum)
+    {
+        // 対象のカリキュラムに紐づく配信日時データを取得
+        $deliveryTimes = $curriculum->deliveryTimes;
+    
+        // 配信日時編集ビューを表示
+        return view('admin.delivery_times_management', compact('curriculum', 'deliveryTimes'));
+    }
 }
-
-
