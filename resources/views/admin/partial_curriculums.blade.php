@@ -1,5 +1,4 @@
 
- <div class="col-md-9">
     <h1 class="mb-4">Curriculums</h1>
     <div class="row">
         @foreach($curriculums as $curriculum)
@@ -24,4 +23,3 @@
         </div>
         @endforeach
     </div>
-</div>
