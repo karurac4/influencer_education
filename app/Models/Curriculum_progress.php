@@ -6,19 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use App\Models\Curriculum;
+
+
 
 class Curriculum_progress extends Model
 {
     use HasFactory;
 
 
-    public function getList() {
-        //curriculum_progresses テーブルからデータを取得
-        $deliveries = DB::table('curriculum_progresses')->get();
-
-        return $deliveries;
-    }
 
 
     public function getArticle() {
@@ -35,9 +30,18 @@ class Curriculum_progress extends Model
         return $banners;
     }
 
+
+    public function getCurriculum_progress() {
+        //Curriculum_progresses テーブルからデータを取得
+        $Curriculum_progresses = DB::table('Curriculum_progresses')->get();
+
+        return $Curriculum_progresses;
+    }
+
+
     public function user(){
 
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'users_id');
 
     }
 

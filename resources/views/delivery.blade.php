@@ -28,13 +28,20 @@
 
     <div class="video">
       <img src="video_url" class="movie">
-
-      <button type="submit" class="clear">受講しました</button>
-
+      </div>
 
 
+      @section('content')
 
-    </div>
+
+        <form action="{{ route('update.flag') }}" method="POST">
+            @csrf
+            @if($record)
+                <button type="hidden" class="clear" name="id" value="{{ $record->id }}">受講しました</button>
+            @endif
+        </form>
+
+
     <div class="personal">
 
       <button class="grade">grade</button>

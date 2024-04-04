@@ -12,6 +12,9 @@ use App\Models\Curriculum_progress;
 use App\Models\Grade;
 use App\Models\Class_clear_checks;
 
+use Illuminate\Support\Facades\DB;
+
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -43,6 +46,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getUsers() {
+        //users テーブルからデータを取得
+        $users = DB::table('users')->get();
+
+        return $users;
+    }
 
     public function curriculum_progress() {
 
@@ -57,10 +66,10 @@ class User extends Authenticatable
     }
 
 
-    
+
     public function grade() {
 
-        return $this->hasMany(Grade::class);
+        return $this->belongsTo(Grade::class);
 
     }
 }

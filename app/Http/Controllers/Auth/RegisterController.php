@@ -51,8 +51,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
+    public function validator(array $data){
         $messages = [
             'required' => ':attribute フィールドは必須です。',
             'email' => '有効なメールアドレスである必要があります。',
@@ -63,7 +62,7 @@ class RegisterController extends Controller
         ];
 
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255','unique:users'],
+            'name' => ['required', 'string', 'max:255',],
             'name_kana' => ['required', 'string', 'max:255', new Katakana],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -76,9 +75,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(Request $request)
-
-    {
+    protected function create(Request $request){
         $data = $request->all();
 
         $validator = $this->validator($data);
@@ -88,6 +85,13 @@ class RegisterController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+        $user = new User;
+        $user->name = $data['name'];
+        $user->name_kana = $data['name_kana'];
+        $user->email = $data['email'];
+        $user->password = bcrypt($data['password']);
+
+        $user->save();
 
         return redirect('login');
     }

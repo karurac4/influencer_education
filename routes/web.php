@@ -2,6 +2,8 @@
 use Illuminate\Foundation\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Models\Curriculum_progress;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,7 +54,7 @@ Route::get('/login', [App\Http\Controllers\UserController::class, 'login'])->nam
 
 //  top
 // top 表示
-Route::get('/top', [App\Http\Controllers\Curriculum_progressController::class, 'top'])->name('top')->middleware('auth');
+Route::get('/top', [App\Http\Controllers\Curriculum_progressController::class, 'top'])->name('top');
 
 // article 取得
 Route::get('/top', [App\Http\Controllers\Curriculum_progressController::class, 'showArticle']);
@@ -60,13 +62,15 @@ Route::get('/top', [App\Http\Controllers\Curriculum_progressController::class, '
 
 // delivery
 // delivery 表示
-Route::get('/delivery', [App\Http\Controllers\Curriculum_progressController::class, 'curriculum_progress'])->name('curriculum_progress');
-// Route::get('/delivery', [App\Http\Controllers\Curriculum_progressController::class, 'curriculum_progress'])->name('curriculum_progress')->middleware('auth');
+// Route::get('/delivery', [App\Http\Controllers\Curriculum_progressController::class, 'delivery'])->name('delivery')->middleware('auth');
+Route::get('/delivery/{id}', [App\Http\Controllers\Curriculum_progressController::class, 'delivery'])->name('delivery')->middleware('auth');
 
 // フラグ
-// Route::get('/update-flag', [App\Http\Controllers\Curriculum_progressController::class, 'updateFlag'])->name('update.flag');
+Route::post('/update-flag', [App\Http\Controllers\Curriculum_progressController::class, 'updateFlag'])->name('update.flag');
 
 
+// 仮
+Route::get('/Curriculum_progress', [App\Http\Controllers\Curriculum_progressController::class, 'Curriculum'])->name('Curriculum')->middleware('auth');
 
 // topに遷移
 Route::get('/top', [App\Http\Controllers\Curriculum_progressController::class, 'top'])->name('top');
@@ -74,4 +78,4 @@ Route::get('/top', [App\Http\Controllers\Curriculum_progressController::class, '
 
 
 
-
+Route::post('/top', [App\Http\Controllers\Curriculum_progressController::class, 'regist'])->name('regist');
