@@ -193,17 +193,19 @@ li{
 
 .personal{
     margin-left:50px;
-    margin-top: 20px;
+    margin-top: 140px;
+
 }
 
 .grade{
-    margin-top: 200px;
     background-color: rgb(91, 255, 255);
     color: #fff;
-    border-radius: 10px;
-    font-size: 30px;
-
+    padding: 2px 5px;
+    border-radius: 5px;
+    font-size: 40px;
 }
+
+
 
 .title{
     font-size: 25px;

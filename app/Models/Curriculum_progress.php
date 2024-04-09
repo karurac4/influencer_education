@@ -14,23 +14,6 @@ class Curriculum_progress extends Model
     use HasFactory;
 
 
-
-
-    public function getArticle() {
-        //articles テーブルからデータを取得
-        $articles = DB::table('articles')->get();
-
-        return $articles;
-    }
-
-    public function getImage() {
-        //banners テーブルからデータを取得
-        $banners = DB::table('banners')->get();
-
-        return $banners;
-    }
-
-
     public function getCurriculum_progress() {
         //Curriculum_progresses テーブルからデータを取得
         $Curriculum_progresses = DB::table('Curriculum_progresses')->get();

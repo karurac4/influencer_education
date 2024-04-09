@@ -26,37 +26,36 @@
     </div>
 
 
-    <div class="video">
-      <img src="video_url" class="movie">
-      </div>
-
-
-      @section('content')
-
-
+    @foreach($Curriculums as $curriculum)
+    @if($curriculum->isWithinDeliveryPeriod)
+        <iframe id="video-{{ $curriculum->id }}" class="movie" src="{{ asset($curriculum->video_url) }}"></iframe>
         <form action="{{ route('update.flag') }}" method="POST">
             @csrf
             @if($record)
-                <button type="hidden" class="clear" name="id" value="{{ $record->id }}">受講しました</button>
+                <button type="submit" class="clear" name="id" value="{{ $record->id }}">受講しました</button>
             @endif
         </form>
+    @else
+        <div class="thumbnail">
+            <img src="{{ asset('storage/images/' . $curriculum->thumbnail) }}" >
+        </div>
+    @endif
+
+ 
+
+      <div class="personal">
+
+            <span class="grade">小学校{{$curriculum->grade_id}}年生</span>
 
 
-    <div class="personal">
 
-      <button class="grade">grade</button>
+            <div class="title">
+            <p>授業タイトル <br>{{$curriculum->title}}</p>
+        </div>
+            <div class="description">
+              <p>講座説明 <br>{{$curriculum->description}}</p>
+            </div>
 
-    <div class="title">
-      <p>title</p>
-    </div>
-
-    <div class="contents">
-      <p>講義内容</p>
-    </div>
-
-    <div class="description">
-      <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-    </div>
-  </div>
-
+      </div>
+  @endforeach
   @endsection

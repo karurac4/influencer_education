@@ -24,7 +24,7 @@
 
 
     @foreach($images as $image)
-          <img id="image-{{ $image->id }}" class="banner" src="{{ asset('image/' . ($image->image)) }}" >
+          <img id="image-{{ $image->id }}" class="banner" src="{{ asset('storage/images/' . ($image->image)) }}" >
               <div id="image">
                 <button class="my-button" onclick="showImage('{{ $image->id }}')"></button>
               </div>
