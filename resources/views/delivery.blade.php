@@ -36,12 +36,14 @@
             @endif
         </form>
     @else
-        <div class="thumbnail">
-            <img src="{{ asset('storage/images/' . $curriculum->thumbnail) }}" >
+
+    <img src="https://img.youtube.com/vi/{{$curriculum->thumbnail}}/maxresdefault.jpg" width="600px" height="400px">
+
+
         </div>
     @endif
 
- 
+
 
       <div class="personal">
 

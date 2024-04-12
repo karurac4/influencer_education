@@ -191,6 +191,12 @@ li{
     border-radius: 10px;
 }
 
+
+.thumbnail{
+    width: 600px;
+    height: 400px;
+}
+
 .personal{
     margin-left:50px;
     margin-top: 140px;

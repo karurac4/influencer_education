@@ -13,8 +13,7 @@ use Carbon\Carbon;
 
 class DeliveryController extends Controller
 {
-       // delivery 表示
-       public function delivery($id) {
+    public function delivery($id) {
         $model = new Curriculum_progress();
         $Curriculum_progresses = $model->getCurriculum_progress();
         $record = Curriculum_progress::find($id);
@@ -22,6 +21,9 @@ class DeliveryController extends Controller
         $curriculums = new Curriculum();
         $Curriculums = $curriculums->getCurriculum();
         $isWithinDeliveryPeriod = true;
+        $Curriculums = $Curriculums->filter(function ($curriculum) use ($id) {
+            return $curriculum->id == $id;
+        });
 
         foreach ($Curriculums as $curriculum) {
             if ($curriculum->alway_delivery_flg == 0) {
@@ -33,18 +35,7 @@ class DeliveryController extends Controller
                 $curriculum->isWithinDeliveryPeriod = true;
             }
         }
-
         return view('delivery', ['Curriculum_progresses' => $Curriculum_progresses, 'flg' => $flg, 'record' => $record, 'Curriculums' => $Curriculums],compact('isWithinDeliveryPeriod'));
     }
-
-    // フラグ
-    public function updateFlag(Request $request){
-            $record = Curriculum_progress::find($request->input('id'));
-            $record->clear_flg = 1;
-            $record->save();
-
-            return redirect()->back();
-    }
-
 
 }
