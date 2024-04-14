@@ -123,11 +123,6 @@ class ArticleController extends Controller
 
         $article->save();
 
-        // $article->update([
-        //     'posted_date' => $request->input('posted_date'),
-        //     'title' => $request->input('title'),
-        //     'article_contents' => $request->input('article_contents'),
-        // ]);
 
         DB::commit();
     } catch (\Exception $e) {
@@ -152,28 +147,6 @@ class ArticleController extends Controller
         $article->delete();
 
         return redirect(route('admin.articles.index'));
-//         $input = $request->all();
 
-//         try {
-
-// //ajaxメソッドから送信されたデータは$requestに格納される
-
-//         $article = Article::find($input['article']); 
-//         $article->delete();
-
-//         return response()->json(['success' => true]);
-
-//     } catch (\Exception $e) {
-
-//         return response()->json([
-            
-            
-//             'success' => false, 'message' => '削除に失敗しました'
-//             ]);
-
-//     }
-
-        // return redirect()->route('admin.articles.index')->with('success', 'お知らせを削除しました。');
-        //
     }
 }

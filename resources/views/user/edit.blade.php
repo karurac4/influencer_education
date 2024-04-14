@@ -7,9 +7,9 @@
         @csrf
 
         @isset($user->profile_image)
-            <img src="{{ asset('storage/profiles' . $user->profile_image) }}" alt="プロフィール画像">
+            <img src="{{ asset('storage/profiles' . $user->profile_image) }}" alt="プロフィール画像" width="150">
         @else
-            <img src="{{ asset('storage/images/no_image.png') }}" alt="ノーイメージ">
+            <img src="{{ asset('storage/images/no_image.png') }}" alt="ノーイメージ" width="150">
         @endif
 
         <div class="form-group">

@@ -11,46 +11,23 @@ use App\Models\Curriculum;
 
 class UserController extends Controller
 {
-    // protected $table = 'grades';
-
-    public function progress($id)
+    public function progress($userId)
     {
-        $user = User::find($id);
-        $grades = Grade::find($id);
-        $curriculums = Curriculum::find($id);
-
-        // $input = $request->all();
-        // dd($userId);
-        // if (Auth::check()){
-        //     $user = User::find($userId); 
-        //     if (!$user) {
-        //         return redirect('/home')->with('error', 'ユーザーが見つかりません。');
-        //     }   
-
-            // $userName = $user->name;
-            // $userName = $request->input('');
-            // $userName = User::find($input['name']); 
-            // $gradeName = $grades->name;
+        $user = User::find($userId); 
+        $userName = $user->name;
+        $gradeName = $user->grade->name;
+        $userId = $user->id;
+        $grades = Grade::all();
+        $curriculums = Curriculum::all();
+        $curriculum = $user->grade->curriculums;
+        
             
-            $userId = $user->id;
-            // $curriculums =1;
-            // $curriculum = $user->grade->curriculums;
-            
-            
-            
-
-            return view('user.progress', compact('user', 'grades', 'curriculums', 'userId'));
-            // return view('user.progress', compact('userName', 'gradeName', 'grades', 'userId', 'curriculum', 'user'));
+            return view('user.progress', compact('userName', 'gradeName', 'grades', 'userId', 'curriculum', 'curriculums', 'user'));
         }
     
 
     public function article(Article $article)
     {
-        // $article = Article::all();
-
-        // if (!$article) {
-        //     return redirect()->route('home')->with('error', 'お知らせが見つかりません。');
-        // }
 
         return view('user.articles', compact('article'));
     }
