@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('description');
             $table->mediumText('video_url');
             $table->tinyInteger('alway_delivery_flg');
-            $table->integer('grade_id',10)->references('id')->on('curriculums');
+            $table->integer('grade_id');
             $table->timestamps();
         });
     }

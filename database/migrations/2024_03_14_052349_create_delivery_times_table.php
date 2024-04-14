@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('delivery_times', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('curriculums_id')->references('id')->on('curriculums');
+            $table->integer('curriculums_id');
             $table->dateTime('delivery_from');
             $table->dateTime('delivery_to');
             $table->timestamps();
