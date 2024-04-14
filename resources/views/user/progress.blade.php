@@ -21,7 +21,7 @@
                 <ul>
                     @foreach ($curriculums as $curriculum)
                         @php
-                        $progress = App\Models\CurriculumProgress::where('users_id', Auth::id())
+                        $progress = App\Models\CurriculumProgress::where('users_id', $user->id)
                             ->where('curriculums_id', $curriculums->id)->first();
                         @endphp
                         <li>
