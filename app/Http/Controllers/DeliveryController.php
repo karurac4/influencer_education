@@ -27,15 +27,33 @@ class DeliveryController extends Controller
 
         foreach ($Curriculums as $curriculum) {
             if ($curriculum->alway_delivery_flg == 0) {
-                $deliveryTime = Delivery_time::where('curriculums_id', $curriculum->id)->first();
+                $deliveryTimes = Delivery_time::where('curriculums_id', $curriculum->id)->get();
                 $now = Carbon::now();
-                $isWithinDeliveryPeriod = $now->between($deliveryTime->delivery_from, $deliveryTime->delivery_to);
+                $isWithinDeliveryPeriod = false;
+                foreach ($deliveryTimes as $deliveryTime) {
+                    if ($now->between($deliveryTime->delivery_from, $deliveryTime->delivery_to)) {
+                        $isWithinDeliveryPeriod = true;
+                        break;
+                    }
+                }
                 $curriculum->isWithinDeliveryPeriod = $isWithinDeliveryPeriod;
             } else {
                 $curriculum->isWithinDeliveryPeriod = true;
             }
         }
+
         return view('delivery', ['Curriculum_progresses' => $Curriculum_progresses, 'flg' => $flg, 'record' => $record, 'Curriculums' => $Curriculums],compact('isWithinDeliveryPeriod'));
     }
 
+
+
+
+        // フラグ
+        public function updateFlag(Request $request){
+            $record = Curriculum_progress::find($request->input('id'));
+            $record->clear_flg = 1;
+            $record->save();
+
+            return redirect()->back();
+    }
 }

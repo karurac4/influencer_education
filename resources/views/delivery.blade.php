@@ -26,38 +26,33 @@
     </div>
 
 
+
     @foreach($Curriculums as $curriculum)
     @if($curriculum->isWithinDeliveryPeriod)
-        <iframe id="video-{{ $curriculum->id }}" class="movie" src="{{ asset($curriculum->video_url) }}"></iframe>
-        <form action="{{ route('update.flag') }}" method="POST">
-            @csrf
-            @if($record)
+        @if($record->clear_flg == 0)
+            <iframe id="video-{{ $curriculum->id }}" class="movie" src="{{ asset($curriculum->video_url) }}"></iframe>
+            <form action="{{ route('update.flag') }}" method="POST">
+                @csrf
                 <button type="submit" class="clear" name="id" value="{{ $record->id }}">受講しました</button>
-            @endif
-        </form>
+            </form>
+        @else
+            <img src="https://img.youtube.com/vi/{{$curriculum->thumbnail}}/maxresdefault.jpg" width="600px" height="400px">
+        @endif
     @else
-
-    <img src="https://img.youtube.com/vi/{{$curriculum->thumbnail}}/maxresdefault.jpg" width="600px" height="400px">
-
-
-        </div>
+        @if($record->clear_flg == 1)
+            <img src="https://img.youtube.com/vi/{{$curriculum->thumbnail}}/maxresdefault.jpg" width="600px" height="400px">
+        @else
+            <img src="https://img.youtube.com/vi/{{$curriculum->thumbnail}}/maxresdefault.jpg" width="600px" height="400px">
+        @endif
     @endif
 
-
-
-      <div class="personal">
-
-            <span class="grade">小学校{{$curriculum->grade_id}}年生</span>
-
-
-
-            <div class="title">
+    <div class="personal">
+        <span class="grade">小学校{{$curriculum->grade_id}}年生</span>
+        <div class="title">
             <p>授業タイトル <br>{{$curriculum->title}}</p>
         </div>
-            <div class="description">
-              <p>講座説明 <br>{{$curriculum->description}}</p>
-            </div>
-
-      </div>
-  @endforeach
-  @endsection
+        <div class="description">
+            <p>講座説明 <br>{{$curriculum->description}}</p>
+        </div>
+    </div>
+@endforeach
