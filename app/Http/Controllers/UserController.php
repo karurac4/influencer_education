@@ -26,10 +26,12 @@ class UserController extends Controller
         }
     
 
-    public function article(Article $article)
+    public function article($articleId)
     {
+        $article = Article::find($articleId);
+        $articleId = $article->id;
 
-        return view('user.articles', compact('article'));
+        return view('user.articles', compact('article', 'articleId'));
     }
     /**
      * Display a listing of the resource.
@@ -79,10 +81,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($userId)
     {
-        
-        return view('user.edit', compact('user'));
+        $user = User::find($userId);
+        $userId = $user->id;
+        return view('user.edit', compact('user', 'userId'));
         //
     }
 

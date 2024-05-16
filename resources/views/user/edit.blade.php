@@ -6,11 +6,11 @@
     <form action="{{ route('user.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-        @isset($user->profile_image)
-            <img src="{{ asset('storage/profiles' . $user->profile_image) }}" alt="プロフィール画像" width="150">
-        @else
-            <img src="{{ asset('storage/images/no_image.png') }}" alt="ノーイメージ" width="150">
-        @endif
+        @isset ($user->profile_image)
+        <img src="{{ asset('storage/profiles/' . $user->profile_image) }}" alt="プロフィール画像" width="150">
+    @else
+        <img src="{{ asset('storage/images/no_image.png') }}" alt="ノーイメージ" width="150">
+    @endif
 
         <div class="form-group">
             <label for="profile_image">画像ファイルを選択:</label>

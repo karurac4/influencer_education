@@ -51,9 +51,9 @@ Route::group(['middleware' => 'method:_PUT'], function () {
 // Route::get('/user/progress/{userId}', 'UserController@progress');
 Route::get('/user/progress/{userId}', [App\Http\Controllers\UserController::class,'progress'])->name('user.progress');
 // Route::get('/user/articles/{articleId}', 'UserController@article');
-Route::get('/user/articles', [App\Http\Controllers\UserController::class,'article'])->name('user.articles');
+Route::get('/user/articles/{articleId}', [App\Http\Controllers\UserController::class,'article'])->name('user.articles');
 // Route::get('/user/edit', 'UserController@edit')->name('user.edit');
-Route::get('/user/edit', [App\Http\Controllers\UserController::class,'edit'])->name('user.edit');
+Route::get('/user/edit/{userId}', [App\Http\Controllers\UserController::class,'edit'])->name('user.edit');
 // Route::post('/user/update', 'UserController@update')->name('user.update');
 Route::post('/user/update', [App\Http\Controllers\UserController::class,'update'])->name('user.update');
 
