@@ -25,6 +25,7 @@
                 @php
                         $progress = App\Models\CurriculumProgress::where('curriculums_id', $curriculum->id)->first();
                         @endphp
+                        <li>
                     @if($grade->id === $curriculum->grades_id)
                     @if ($progress && $progress->clear_flag === 1)
                         {{ $curriculum->title }}（受講済）
@@ -34,6 +35,7 @@
                 
             @endif
             @endif
+            </li>
             @endforeach
         </ul>
         </li>
