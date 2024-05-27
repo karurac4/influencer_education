@@ -21,21 +21,24 @@
         @foreach ($grades as $grade)
             <li>{{ $grade->name }}
                 <ul>
-                    @foreach ($curriculums as $curriculum)
-                        @php
-                        $progress = App\Models\CurriculumProgress::where('users_id', $user->id)
-                            ->where('curriculums_id', $curriculum->id)->first();
+                @foreach ($curriculums as $curriculum)
+                @php
+                        $progress = App\Models\CurriculumProgress::where('curriculums_id', $curriculum->id)->first();
                         @endphp
-                        <li>
-                            @if ($progress && $progress->clear_flag === 1)
-                                {{ $curriculum->title }}（受講済）
-                            @else
-                                {{ $curriculum->title }}
-                            @endif
-                        </li>
-                    @endforeach
-                </ul>
-            </li>
+                    @if($grade->id === $curriculum->grades_id)
+                    @if ($progress && $progress->clear_flag === 1)
+                        {{ $curriculum->title }}（受講済）
+                    @else 
+                        {{ $curriculum->title }}
+                    
+                
+            @endif
+            @endif
+            @endforeach
+        </ul>
+        </li>
         @endforeach
+        
     </ul>
 @endsection
+    

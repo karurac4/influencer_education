@@ -26,7 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'profile_image',
-        'grade_id',
+        'grades_id',
     ];
 
     /**
@@ -50,13 +50,13 @@ class User extends Authenticatable
 
     public function grade()
     {
-        return $this->belongsTo(Grade::class);
+        return $this->belongsTo(Grade::class, 'grades_id');
     }
 
-    // public function curriculums()
-    // {
-    //     return $this->belongsToMany(Curriculum::class, 'curriculum_progress', 'curriculums_id', 'users_id')->withPivot('clear_flag');
-    // }
+    public function curriculums()
+    {
+        return $this->belongsToMany(Curriculum::class, 'curriculum_progress', 'curriculums_id', 'users_id')->withPivot('clear_flag');
+    }
 
     public function curriculum_progress()
     {

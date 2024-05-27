@@ -17,11 +17,11 @@ class Grade extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class, 'grade_id');
+        return $this->hasMany(User::class, 'grades_id');
     }
 
     public function curriculums()
     {
-        return $this->hasMany(Curriculum::class, 'grade_id', 'curriculums_id');
+        return $this->hasMany(Curriculum::class, 'grades_id', 'curriculums_id');
     }
 }

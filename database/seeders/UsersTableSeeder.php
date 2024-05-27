@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
                 'email'=> 'hoge@example.com',
                 'password'=> Hash::make('hogehoge'),
                 'profile_image'=> 'hoge.png',
-                'grade_id'=> '6',
+                'grades_id'=> '6',
             ],
             [
                 'id'=> '2',
@@ -36,7 +36,7 @@ class UsersTableSeeder extends Seeder
                 'email'=> 'sample@example.com',
                 'password'=> Hash::make('samplehanako'),
                 'profile_image'=> 'sample.png',
-                'grade_id'=> '10',
+                'grades_id'=> '10',
                 ],
         //
         ]);

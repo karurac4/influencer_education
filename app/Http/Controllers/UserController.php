@@ -8,6 +8,7 @@ use App\Models\Grade;
 use App\Models\User;
 use App\Models\Article;
 use App\Models\Curriculum;
+use App\Models\CurriculumProgress;
 
 class UserController extends Controller
 {
@@ -20,9 +21,10 @@ class UserController extends Controller
         $grades = Grade::all();
         $curriculums = Curriculum::all();
         $curriculum = $user->grade->curriculums;
+        $progress = CurriculumProgress::all();
         
             
-            return view('user.progress', compact('userName', 'gradeName', 'grades', 'userId', 'curriculum', 'curriculums', 'user'));
+            return view('user.progress', compact('userName', 'gradeName', 'grades', 'userId', 'curriculum', 'curriculums','user','progress'));
         }
     
 

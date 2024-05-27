@@ -24,7 +24,7 @@ class CurriculumsTableSeeder extends Seeder
                     'description'=> 'Description for Curriculum',
                     'video_url'=> 'video_url',
                     'alway_delivery_flg'=> true,
-                    'grade_id'=> '3',
+                    'grades_id'=> '3',
                 ],
                 [
                     'id'=> '2',
@@ -33,7 +33,7 @@ class CurriculumsTableSeeder extends Seeder
                     'description'=> 'Description for Curriculum',
                     'video_url'=> 'video_url',
                     'alway_delivery_flg'=> true,
-                    'grade_id'=> '5',
+                    'grades_id'=> '5',
                 ],
                 [
                     'id'=> '3',
@@ -42,7 +42,7 @@ class CurriculumsTableSeeder extends Seeder
                     'description'=> 'Description for Curriculum',
                     'video_url'=> 'video_url',
                     'alway_delivery_flg'=> true,
-                    'grade_id'=> '12',
+                    'grades_id'=> '12',
                 ],
             //
             ]);

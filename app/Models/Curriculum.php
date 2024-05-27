@@ -10,18 +10,18 @@ class Curriculum extends Model
     use HasFactory;
 
     protected $table = 'curriculums';
-    protected $fillable = ['title', 'thumbnail', 'description', 'video_url', 'alway_delivery_flg', 'grade_id'];
+    protected $fillable = ['id', 'title', 'thumbnail', 'description', 'video_url', 'alway_delivery_flg', 'grades_id'];
 
     public function grade()
     {
-        return $this->belongsTo(Grade::class, 'grade_id');
+        return $this->belongsTo(Grade::class, 'grades_id');
         
     }
 
-    // public function users()
-    // {
-    //     return $this->belongsToMany(User::class, 'curriculum_progress', 'users_id', 'curriculums_id')->withPivot('clear_flag');
-    // }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'curriculum_progress', 'users_id', 'curriculums_id')->withPivot('clear_flag');
+    }
 
     public function curriculum_progress()
     {
