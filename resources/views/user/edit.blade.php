@@ -3,7 +3,22 @@
 @section('content')
     <a href="/">戻る</a>
 
-    <form action="{{ route('user.update') }}" method="POST" enctype="multipart/form-data">
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+           @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+           @endforeach
+        </ul>
+    </div>
+@endif
+
+    <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         @isset ($user->profile_image)
@@ -19,17 +34,20 @@
 
         <div class="form-group">
             <label for="name">ユーザーネーム:</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}" required>
+            <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}">
+            
         </div>
 
         <div class="form-group">
             <label for="name_kana">ユーザーネームカナ:</label>
-            <input type="text" class="form-control" id="name_kana" name="name_kana" value="{{ $user->name_kana }}" required>
+            <input type="text" class="form-control" id="name_kana" name="name_kana" value="{{ $user->name_kana }}"
+            
         </div>
 
         <div class="form-group">
             <label for="email">メールアドレス:</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
+            <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}">
+            
         </div>
 
         <div class="form-group">

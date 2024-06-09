@@ -1,6 +1,7 @@
 @extends('layouts.user')
 
 @section('content')
+<div class="container">
     <a href="/">戻る</a>
     
     <div>
@@ -17,9 +18,14 @@
     <p>現在の学年：{{ $gradeName }}</p>
 
     <h2>各学年毎の授業タイトル</h2>
-    <ul>
+    <ul  class="row row-cols-3">
         @foreach ($grades as $grade)
-            <li>{{ $grade->name }}
+            <li>
+            @if($user->grades_id >= $grade->id)
+            <a href="/">{{ $grade->name }}</a>
+            @else 
+            {{ $grade->name }}
+            @endif
                 <ul>
                 @foreach ($curriculums as $curriculum)
                 @php
@@ -35,6 +41,7 @@
                 
             @endif
             @endif
+            
             </li>
             @endforeach
         </ul>
@@ -42,5 +49,6 @@
         @endforeach
         
     </ul>
+</div>
 @endsection
     

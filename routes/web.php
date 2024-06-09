@@ -53,9 +53,9 @@ Route::get('/user/progress/{userId}', [App\Http\Controllers\UserController::clas
 // Route::get('/user/articles/{articleId}', 'UserController@article');
 Route::get('/user/articles/{articleId}', [App\Http\Controllers\UserController::class,'article'])->name('user.articles');
 // Route::get('/user/edit', 'UserController@edit')->name('user.edit');
-Route::get('/user/edit/{userId}', [App\Http\Controllers\UserController::class,'edit'])->name('user.edit');
+Route::get('/user/edit/{id}', [App\Http\Controllers\UserController::class,'edit'])->name('user.edit');
 // Route::post('/user/update', 'UserController@update')->name('user.update');
-Route::post('/user/update', [App\Http\Controllers\UserController::class,'update'])->name('user.update');
+Route::post('/user/update/{id}', [App\Http\Controllers\UserController::class,'update'])->name('user.update');
 
 // Route::get('/password/change', 'PasswordController@change')->name('password.change');
 Route::get('/password/change', [App\Http\Controllers\PasswordController::class,'change'])->name('password.change');

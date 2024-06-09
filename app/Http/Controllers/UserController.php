@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Models\Article;
 use App\Models\Curriculum;
 use App\Models\CurriculumProgress;
+use App\Http\Requests\UserRequest;
+use Validator;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -83,11 +86,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($userId)
+    public function edit($id)
     {
-        $user = User::find($userId);
-        $userId = $user->id;
-        return view('user.edit', compact('user', 'userId'));
+        $user = User::find($id);
+        // $user = User::all();
+        // $userId = $user->id;
+        return view('user.edit', compact('user'));
         //
     }
 
@@ -98,31 +102,36 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request)
     {
-        $user = auth()->user();
+            // トランザクションの開始
+            DB::beginTransaction();
+            try {
+                
+            $user = auth()->user();
+            
+            $user->name = $request->name;
+        $user->name_kana = $request->name_kana;
+        $user->email = $request->email;
 
-        $rules = [
-            'name' => 'required|string|max:255',
-            'name_kana' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' .$user->id,
-            'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-        ];
+            // 画像をアップロードした場合の処理
+            if ($request->hasFile('profile_image')) {
+                $filename = $request->profile_image->getClientOriginalName();
+            $filePath = $request->iprofile_image->storeAs('profiles', $filename, 'public');
+            $user->profile_image = '/storage/' . $filePath;
 
-        $request->validate($rules);
+            }
+    
+            // $user->update($input);
+            $user->save();
 
-        $input = $request->only(['name', 'name_kana', 'email']);
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollback();
+        return back();
+    }
 
-        // 画像をアップロードした場合の処理
-        if ($request->hasFile('profile_image')) {
-            $imagePath = $request->file('profile_image')->store('profiles', 'public');
-            $input['profile_image'] = $imagePath;
-        }
-        
-        // $user->update($input);
-        return redirect()->route('user.edit')->with('success', 'プロフィールが更新されました。');
-        
-        //
+        return redirect()->route('user.edit', $user->id)->with('success', 'プロフィールが更新されました。');
     }
 
     /**

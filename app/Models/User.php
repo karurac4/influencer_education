@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\CurriculumProgress;
 use App\Models\Grade;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -61,5 +62,15 @@ class User extends Authenticatable
     public function curriculum_progress()
     {
         return $this->hasMany(CurriculumProgress::class);
+    }
+
+    public function registUser($data) {
+        // 登録処理
+        DB::table('users')->insert([
+            'name' => $data->name,
+            'name_kana' => $data->name_kana,
+            'email' => $data->email,
+            'profile_image' => $data->profile_image,
+        ]);
     }
 }

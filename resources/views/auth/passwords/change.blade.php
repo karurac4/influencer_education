@@ -1,7 +1,7 @@
 @extends('layouts.user')
 
 @section('content')
-    <a href="{{ route('user.edit') }}">戻る</a>
+<a href="/">戻る</a>
     <div class="container">
         <h3>パスワード変更</h3> 
         <div class="card-body">
