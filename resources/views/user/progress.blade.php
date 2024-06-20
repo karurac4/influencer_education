@@ -21,11 +21,9 @@
     <ul  class="row row-cols-3">
         @foreach ($grades as $grade)
             <li>
-            @if($user->grades_id >= $grade->id)
-            <a href="/">{{ $grade->name }}</a>
-            @else 
+            
             {{ $grade->name }}
-            @endif
+            
                 <ul>
                 @foreach ($curriculums as $curriculum)
                 @php
@@ -33,12 +31,15 @@
                         @endphp
                         <li>
                     @if($grade->id === $curriculum->grades_id)
+                    @if($user->grades_id >= $grade->id)
+                    <a href="/">{{ $curriculum->title }}</a>
+                    
                     @if ($progress && $progress->clear_flag === 1)
-                        {{ $curriculum->title }}（受講済）
+                    <a href="/">（受講済）</a>
+                    @endif
                     @else 
                         {{ $curriculum->title }}
                     
-                
             @endif
             @endif
             
